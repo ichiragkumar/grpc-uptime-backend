@@ -1,0 +1,338 @@
+syntax = "proto3";
+
+
+
+package coupon;
+
+
+service CouponStreamService {
+
+  rpc StreamCouponIssues(UserPrefrences) returns (stream CouponIssue);
+
+  rpc StreamActiveCoupons(User) returns (stream ActiveCouponStreamResponse);
+
+  rpc StreamActiveBusinessesStream(UserPrefrences) returns (stream ActiveBusinessesStreamResponse);
+
+  rpc StreamMoreCouponRequests(User) returns (stream MoreCouponRequest);
+
+  rpc ActiveCouponIssuesWithBusinessesStream(UserPrefrences) returns (stream CouponIssueWithBusiness);
+
+  rpc WalletStream(User) returns (stream WalletBalanceResponse);
+
+  rpc StreamActiveDrawn(UserPrefrences) returns (stream ActiveDrawnResponse);
+
+  rpc TicketsStream(User) returns (stream TicketStreamResponse);
+
+  rpc ZonesStream(UserPrefrences) returns (stream ZoneStreamResponse);
+
+  rpc BusinessBranchStream(UserPrefrences) returns (stream BusinessBranchStreamResponse);
+
+  rpc StreamUserCarts(User) returns (stream UserCartStreamResponse);
+
+  rpc StreamUserNotifications(MainUser) returns (stream UserNotificationStreamResponse);
+
+  rpc EnvironmentStream(EmptyRequest) returns (stream EnvironmentResponse);
+
+}
+
+
+
+message StatusFilter {
+  repeated string statuses = 1; 
+}
+
+
+
+
+message CouponIssue {
+  string id = 1;
+  string drawId = 2;
+  string businessContractId = 3;
+  bool   deliveryAvailable = 4;
+  string deliveryContactPhone = 5;
+  string title = 6; 
+  string image = 7; 
+  string descriptionFile = 8;
+  string activeAt = 9;
+  string endAt = 10;
+  string expireAt = 11;
+  repeated string zoneIds = 12;
+  int32 initialAmount = 13;
+  string currency = 14;
+  double purchasePriceAmount = 15;
+  int32 discountAmount = 16;
+  double sellPriceAmount = 17;
+  double ticketPriceAmount = 18;
+  int32 grandDrawMultiplier = 19;
+  string couponsSource = 20;
+  string couponsCsvPath = 21;
+  string additionalCouponsCsvPath = 22;
+  int32 arrangement = 23;
+  string couponsPrefix = 24;
+  string businessId = 25;
+  string createdAt = 26;
+  string type = 27;
+  int32 amountExpired = 28;
+  int32 additionalAmount = 29;
+  int32 lastIncrId = 30;
+  int32 nextCodeIncrId = 31;
+  string _rawPath = 32;
+  string restrictions = 33;
+  repeated string methodsOfRedemption = 34;
+  int32 amountUsed = 35;
+  int32 amountSold = 36;
+  int32 streamType = 37;
+  string status = 38;
+  repeated string restrictedBranchIds = 39;
+}
+
+
+message UserFilter {
+  optional string languageCode = 2;
+}
+
+message User{
+  string userId = 1;
+}
+
+
+message UserPrefrences {
+ optional string languageCode = 1;
+ optional string brightness = 2;
+}
+
+
+message MoreCouponRequest {
+  string id = 1;           
+  string userId = 2;       
+  string couponIssueId = 3; 
+  int64  createdAt = 4;      
+  string parentId = 5;  
+  int32 streamType = 6;
+}
+
+
+
+message EmptyRequest {
+
+}
+
+
+message ActiveBusinessesStreamResponse {
+  string   id = 1;               
+  string   title = 2;             
+  string   description = 3;       
+  string   image = 4;             
+  repeated string categories = 5; 
+  string   businessId = 6;        
+  string   contractType = 7;      
+  int32    streamType = 8;        
+  string   logo = 9;              
+  string   createdAt = 10;        
+  string   sponsorshipType = 11;  
+  bool     suspended = 12;        
+           
+}
+
+
+message ActiveCouponStreamResponse {
+  string id = 1;
+  RedemptionInfo redemptionInfo = 2;
+  string code = 3;
+  string businessId = 4;
+  string couponIssueId = 5;
+  bool redeemedBySelfActivation = 6;
+  int32 purchasePrice = 7;
+  string purchaseCurrency = 8;
+  string userId = 9;
+  string status = 10;
+  string expireAt = 11;
+  string createdAt = 12;
+  string purchasedAt = 13;
+  int32 sellPriceAmount = 14;
+  int32 streamType = 15;
+}
+
+message CouponIssueWithBusiness {
+  string couponIssueId = 1;
+  string businessId = 2;
+  string couponName = 3;
+  string businessName = 4;
+  string status = 5;
+  string logo = 6;
+  repeated string categories = 7;
+  string endsAt = 8;
+  int32 amountLeft = 9;
+  string type = 10;
+  int32 priceAmount = 11;
+  string currency = 12;
+  string drawId = 13;
+  double sellPriceAmount = 14;
+  repeated string restrictedBranchIds = 15;
+  repeated string drawNumbers = 16;
+  string descriptionFile = 17;
+  double purchasePriceAmount = 18;
+  int32 arrangement = 19;
+  int32 streamType = 20;
+}
+
+
+message RedemptionInfo {
+  string redeemedByBusinessManagerId = 1;
+  string methodOfRedemption = 2;
+}
+
+
+
+
+message Balance {
+  double USD = 1;
+  double EGP = 2;
+}
+
+message WalletBalanceResponse {
+  Balance availableBalances = 1;
+  Balance blockedBalances = 2;
+  int32 streamType = 3;
+
+}
+
+
+
+
+message SpecialEvent {
+  string cardColor = 1;
+  string title = 2;
+  string shortDescription = 3;
+}
+
+message ActiveDrawnResponse {
+  string id = 1; 
+  string contract_id = 2;
+  string business_id = 3;
+  string type = 4;
+  string subtype = 5; 
+  string currency = 6; 
+  string title = 7; 
+  string open_at = 8; 
+  string predraw_start_at = 9; 
+  string draw_start_at = 10;
+  string contests_start_at = 11; 
+  string description_file = 12; 
+  string logo = 13;
+  int32 amount_of_numbers_by_participant = 14;
+  optional int32 grand_draw_free_ticket_spendings_amount = 15; 
+  int32 draw_numbers_count = 16; 
+  int32 participants_count = 17; 
+  int32 amount_of_chosen_numbers = 18; 
+  int32 total_prizes_value = 19; 
+  int32 total_prizes_amount = 20; 
+  string created_at = 21; 
+  string status = 22;
+  SpecialEvent specialEvent = 23;
+  int32 streamType = 24;
+}
+
+
+
+message TicketStreamResponse {
+  string id = 1;
+  string userId = 2;
+  string drawId = 3;
+  string drawType = 4;
+  bool isDrawClosed = 5;
+  repeated string drawNumbers = 6;
+  string createdAt = 7;
+  string status = 8;
+  string winningDrawNumber = 9;
+  int32 streamType = 10;
+}
+
+message Location {
+  double latitude = 1;
+  double longitude = 2;
+}
+
+
+
+
+message ZoneStreamResponse {
+  string id = 1;
+  string country = 2;
+  string createdAt = 3;
+  bool isDefault = 4;
+  string name = 5;
+  Location location = 6;
+  int32 streamType = 7;
+}
+
+
+
+message OpeningHours {
+  string openTime = 1;
+  string closeTime = 2;
+}
+
+
+message BusinessBranchStreamResponse {
+  string id = 1;
+  bool businessSuspended = 2;
+  string shortAddress = 3;
+  string businessId = 4;
+  string zoneId = 5;
+  Location location = 6;
+  map<string, OpeningHours> openingHours = 7;
+  string createdAt = 8;
+  repeated string contractTypes = 9;
+  int32 streamType = 10;
+}
+
+message UserCartStreamItem {
+  string itemId = 1;
+  int32 amount = 2;
+  int32 purchasePrice = 3;
+  string currency = 4;
+  optional int32 feePrice = 5;
+  optional float taxAmount = 6;
+  int32 streamType = 7;
+}
+
+
+message UserCartStreamResponse {
+  repeated UserCartStreamItem items = 1;
+  int32 streamType = 2;
+}
+
+
+message  MainUser {
+  string userId = 1;
+  UserPrefrences userPrefrences = 2;
+}
+message UserNotificationStreamResponse  {
+    string    id = 1;
+    bool      isRead = 2;
+    string    createdAt = 3;
+    string    title = 4;
+    string    body = 5;
+    string    topic = 6;
+    optional  string screen = 7;
+    optional  string userId = 8;
+    int32     streamType = 9;
+}
+
+message EnvironmentResponse{
+  string id = 1;
+  string allowInvites = 2;
+  string allowInviteAll = 3;
+  string stage = 4;
+  string deleteUnsentReports = 5;
+  string useCrashlytics = 6;
+  string auditLogsCredentials = 7;
+  string requiredMinimumAndroidVersion = 8;
+  string requiredMinimumiOSVersion = 9;
+  string deleteAndroidUnsentReports = 10;
+  string deleteiOSUnsentReports = 11;
+  string useAndroidCrashlytics = 12;
+  string useiOSCrashlytics = 13;
+  int32 streamType = 14;
+}
